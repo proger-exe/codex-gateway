@@ -1,33 +1,25 @@
-# codex-gateway
+# Codex Gateway
 
 <!-- portfolio-card:start -->
 [![Codex Gateway — Codex CLI за API с ограничением рабочей папки.](docs/portfolio/card.png)](docs/portfolio/card.svg)
 <!-- portfolio-card:end -->
 
-`codex-gateway` поднимает локальный HTTP API поверх установленного `codex` CLI. Проект нужен как стабильная интеграционная точка для собственных клиентов: бота, веб-интерфейса, скриптов и автоматизаций.
+Подключить бота, веб-интерфейс или скрипт к локальному Codex CLI через один HTTP API. Codex Gateway берёт на себя запуск процесса, продолжение диалога и проверку структурированных ответов. Клиент работает с сессиями и заданиями.
 
-Сервис изначально рассчитан на одного владельца машины:
+Для интеграций важен предсказуемый формат данных. Клиент может зарегистрировать JSON Schema и получить проверенный ответ; при невалидном JSON шлюз запрашивает исправление. Длительную задачу можно отправить в фон и опрашивать по `job_id`.
 
-- слушает только `127.0.0.1` по умолчанию;
-- требует bearer token;
-- ограничивает workspace allowlist-ом;
-- запрещает `danger-full-access`;
-- хранит состояние сессий и схем локально на диске.
+## Возможности интеграции
 
-Архитектурный замысел и мотивация описаны в [IDEA.md](IDEA.md).
+- Проверка состояния через `GET /health` и список моделей через `GET /models/list`.
+- Создание, чтение и сброс сессий через `/sessions`, продолжение разговора по сохранённому `thread_id`.
+- Текстовые ответы через `/chat` и structured JSON по схемам из `/schemas`.
+- Фоновые задания через `POST /jobs` с получением состояния через `GET /jobs/{job_id}`.
 
-## Что умеет
+Сервис рассчитан на одного владельца машины: по умолчанию слушает `127.0.0.1`, требует bearer token, ограничивает рабочие каталоги и запрещает `danger-full-access`. Сессии и схемы сохраняются локально. Авторизованный Codex CLI устанавливается отдельно.
 
-- health-check: `GET /health`
-- schema registry: `POST /schemas`, `GET /schemas/{schema_id}`
-- session lifecycle: `POST /sessions`, `GET /sessions/{session_id}`, `POST /sessions/{session_id}/reset`
-- models discovery: `GET /models/list`
-- chat endpoint: `POST /chat`
-- background jobs: `POST /jobs`, `GET /jobs/{job_id}`
-- raw text ответы и structured JSON по зарегистрированной JSON Schema
-- продолжение диалога через сохраненный `thread_id`
-- adaptive retry для structured output, если модель вернула невалидный JSON
-- фоновое выполнение длительных задач с polling по `job_id`
+Мотивация и архитектурный замысел: [IDEA.md](IDEA.md).
+
+Обсудить похожий проект: [sh3l.beer](https://sh3l.beer).
 
 ## Как это устроено
 
