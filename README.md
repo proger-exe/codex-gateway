@@ -1,7 +1,7 @@
 # codex-gateway
 
 <!-- portfolio-card:start -->
-[![Codex Gateway — Codex CLI за API с ограничением рабочей папки.](docs/portfolio/card.png)](docs/portfolio/card.svg)
+[![sh3lby.code — нейтральная обложка](docs/portfolio/card.png)](docs/portfolio/card.svg)
 <!-- portfolio-card:end -->
 
 `codex-gateway` поднимает локальный HTTP API поверх установленного `codex` CLI. Проект нужен как стабильная интеграционная точка для собственных клиентов: бота, веб-интерфейса, скриптов и автоматизаций.
